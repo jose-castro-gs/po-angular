@@ -208,6 +208,25 @@ export abstract class PoTableBaseComponent implements OnChanges, OnDestroy {
    * @optional
    *
    * @description
+   *
+   * Define se a configuracao das colunas visíveis será salva no local storage.
+   *
+   * Quando tiver um nome, as colunas visiveis ficarão a salvo no local storage quando sair do ColumnsManager.
+   * No carregamento inicial da tabela, será procurado no local storage a configuração das colunas visiveis e
+   * caso tenha, a tabela será reconfigurada com as colunas visiveis.
+   */
+  @Input('p-save-columns-manager') set saveColumnsManager(value: string) {
+    this._saveColumnsManager = value;
+  }
+
+  get saveColumnsManager(): string {
+    return this._saveColumnsManager;
+  }
+
+  /**
+   * @optional
+   *
+   * @description
    * Evento executado quando todas as linhas são selecionadas por meio do *checkbox* que seleciona todas as linhas.
    */
   @Output('p-all-selected') allSelected: EventEmitter<any> = new EventEmitter<any>();
@@ -313,6 +332,7 @@ export abstract class PoTableBaseComponent implements OnChanges, OnDestroy {
   private _actions?: Array<PoTableAction> = [];
   private _columns: Array<PoTableColumn> = [];
   private _container?: string;
+  private _saveColumnsManager?: string;
   private _height?: number;
   private _hideDetail?: boolean = false;
   private _items: Array<PoTableColumn>;

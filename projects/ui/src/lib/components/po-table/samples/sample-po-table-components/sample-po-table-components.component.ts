@@ -49,7 +49,7 @@ export class SamplePoTableComponentsComponent {
     },
     { property: 'component', type: 'link' },
     { property: 'type', label: 'Type', type: 'columnTemplate', width: '10%' },
-    { property: 'description', color: this.experimentalColor.bind(this) },
+    { property: 'description', color: this.experimentalColor.bind(this), visible: false },
     {
       property: 'extra',
       label: 'Extras',

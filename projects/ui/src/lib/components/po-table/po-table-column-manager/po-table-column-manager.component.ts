@@ -24,24 +24,44 @@ const PoTableColumnManagerMaxColumnsDefault = 99999;
 export const poTableColumnManagerLiteralsDefault = {
   en: {
     columnsManager: 'Columns manager',
-    restoreDefault: 'Restore default'
+    restoreDefault: 'Restore default',
+    allColumns: 'All columns'
   },
   es: {
     columnsManager: 'Gerente de columna',
-    restoreDefault: 'Restaurar por defecto'
+    restoreDefault: 'Restaurar por defecto',
+    allColumns: 'Todas las columnas'
   },
   pt: {
     columnsManager: 'Gerenciador de colunas',
-    restoreDefault: 'Restaurar padrão'
+    restoreDefault: 'Restaurar padrão',
+    allColumns: 'Todas as colunas'
   },
   ru: {
     columnsManager: 'менеджер колонок',
-    restoreDefault: 'сброс настроек'
+    restoreDefault: 'сброс настроек',
+    allColumns: 'все столбцы'
   }
 };
 
 @Component({
   selector: 'po-table-column-manager',
+  styles: [
+    `
+      .po-table-column-manager-header-allcolumns {
+        display: block;
+        position: relative;
+        top: 50%;
+        transform: translate(0%, -50%);
+      }
+	`,
+	`
+      .po-table-column-manager-header-allcolumns .po-button:focus {
+        border-radius: 1px;
+        outline: 2px dashed #8241a4;
+      }
+    `
+  ],
   templateUrl: './po-table-column-manager.component.html'
 })
 export class PoTableColumnManagerComponent implements OnChanges, OnDestroy {
@@ -64,10 +84,13 @@ export class PoTableColumnManagerComponent implements OnChanges, OnDestroy {
   visibleColumns: Array<string> = [];
 
   private _maxColumns: number = PoTableColumnManagerMaxColumnsDefault;
+  private _saveColumnsManager?: string;
   private defaultColumns: Array<PoTableColumn> = [];
   private resizeListener: () => void;
   private restoreDefaultEvent: boolean;
+  private allColumnsDefaultEvent: boolean;
   private lastEmittedValue: Array<string>;
+  private columnsSaved: Array<string>;
 
   @Input('p-max-columns') set maxColumns(value: number) {
     this._maxColumns = convertToInt(value, PoTableColumnManagerMaxColumnsDefault);
@@ -75,6 +98,14 @@ export class PoTableColumnManagerComponent implements OnChanges, OnDestroy {
 
   get maxColumns() {
     return this._maxColumns;
+  }
+
+  @Input('p-save-columns-manager') set saveColumnsManager(value: string) {
+    this._saveColumnsManager = value;
+  }
+
+  get saveColumnsManager() {
+    return this._saveColumnsManager;
   }
 
   constructor(private renderer: Renderer2, languageService: PoLanguageService) {
@@ -91,6 +122,7 @@ export class PoTableColumnManagerComponent implements OnChanges, OnDestroy {
 
     if (target && target.firstChange) {
       this.initializeListeners();
+      this.checkSaveColumnsManager();
     }
 
     if (columns) {
@@ -123,6 +155,28 @@ export class PoTableColumnManagerComponent implements OnChanges, OnDestroy {
     this.checkChanges(defaultColumns, this.restoreDefaultEvent);
   }
 
+  allColumns() {
+    let visibleColumns = [];
+
+    this.columns.forEach(column => {
+      visibleColumns = [...visibleColumns, column.property];
+    });
+
+    this.allColumnsDefaultEvent = true;
+    this.checkChanges(visibleColumns, this.allColumnsDefaultEvent);
+  }
+
+  checkSaveColumnsManager() {
+    if (this.saveColumnsManager) {
+      const columnsSaved = localStorage.getItem(this.saveColumnsManager);
+      if (columnsSaved && columnsSaved !== '[]') {
+        const visibleColumns = JSON.parse(columnsSaved);
+
+        this.columnsSaved = [...visibleColumns];
+      }
+    }
+  }
+
   private verifyToEmitChange(event: Array<string>) {
     const newColumns = [...event];
 
@@ -146,13 +200,30 @@ export class PoTableColumnManagerComponent implements OnChanges, OnDestroy {
   }
 
   private verifyToEmitVisibleColumns() {
-    if (this.restoreDefaultEvent) {
+    if (this.allColumnsDefaultEvent) {
+      // veio do restore default
+      this.verifyAllColumnsValues();
+    } else if (this.restoreDefaultEvent) {
       // veio do restore default
       this.verifyRestoreValues();
     } else {
       // foi disparado no close popover;
       this.verifyOnClose();
     }
+  }
+
+  private verifyAllColumnsValues() {
+    let visibleColumns = [];
+
+    this.columns.forEach(column => {
+      visibleColumns = [...visibleColumns, column.property];
+    });
+
+    if (this.allowsChangeSelectedColumns(visibleColumns)) {
+      this.emitChangeOnRestore(visibleColumns);
+    }
+
+    this.allColumnsDefaultEvent = false;
   }
 
   private verifyRestoreValues() {
@@ -181,6 +252,10 @@ export class PoTableColumnManagerComponent implements OnChanges, OnDestroy {
 
   private verifyOnClose() {
     if (this.allowsEmission()) {
+      if (this.saveColumnsManager) {
+        localStorage.setItem(this.saveColumnsManager, JSON.stringify(this.visibleColumns));
+      }
+
       this.emitVisibleColumns();
     }
   }
@@ -291,15 +366,19 @@ export class PoTableColumnManagerComponent implements OnChanges, OnDestroy {
 
   private onChangeColumns(columns: SimpleChange) {
     const { currentValue = [], previousValue = [] } = columns;
+    let currentValueTemp = currentValue;
 
     // atualizara o defaultColumns, quando for a primeira vez ou quando o defaultColumns for diferente do currentValue
-    if (!this.lastVisibleColumnsSelected && this.stringify(this.defaultColumns) !== this.stringify(currentValue)) {
-      this.defaultColumns = [...currentValue];
+    if (!this.lastVisibleColumnsSelected && this.defaultColumns.length === 0) {
+      this.defaultColumns = [...currentValueTemp];
+      if (this.columnsSaved) {
+        currentValueTemp = this.getVisibleTableColumns(this.columnsSaved);
+      }
     }
 
     // verifica se o valor anterior é diferente do atual para atualizar as columnsOptions apenas quando for necessario
-    if (this.stringify(previousValue) !== this.stringify(currentValue)) {
-      this.updateValues(currentValue);
+    if (this.stringify(previousValue) !== this.stringify(currentValueTemp)) {
+      this.updateValues(currentValueTemp);
     }
   }
 

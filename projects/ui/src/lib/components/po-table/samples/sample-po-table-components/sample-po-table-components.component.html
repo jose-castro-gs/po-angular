@@ -11,6 +11,7 @@
   [p-sort]="true"
   (p-show-more)="showMore($event)"
   (p-sort-by)="sort($event)"
+  p-save-columns-manager="sample-po-table-components"
 >
   <ng-template p-table-column-template [p-property]="'type'" let-value>
     <div class="badge {{ value }}">{{ value | uppercase }}</div>

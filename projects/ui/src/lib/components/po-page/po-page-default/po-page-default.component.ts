@@ -34,7 +34,6 @@ import { PoPageDefaultBaseComponent } from './po-page-default-base.component';
   templateUrl: './po-page-default.component.html'
 })
 export class PoPageDefaultComponent extends PoPageDefaultBaseComponent implements AfterContentInit, OnChanges {
-  limitPrimaryActions: number = 3;
   dropdownActions: Array<PoPageAction>;
   isMobile: boolean;
 
@@ -59,6 +58,7 @@ export class PoPageDefaultComponent extends PoPageDefaultBaseComponent implement
   }
 
   ngOnChanges(changes: { [propName: string]: SimpleChange }) {
+    this.setIsMobile();
     this.setDropdownActions();
   }
 
@@ -85,7 +85,17 @@ export class PoPageDefaultComponent extends PoPageDefaultBaseComponent implement
   setDropdownActions(): void {
     if (this.visibleActions.length > this.limitPrimaryActions) {
       this.dropdownActions = this.visibleActions.slice(this.limitPrimaryActions - 1);
+    } else {
+      this.dropdownActions = [];
     }
+  }
+
+  isVisibleButton(column: number): boolean {
+    return (
+      !this.isMobile &&
+      (this.visibleActions.length <= this.limitPrimaryActions || column + 1 < this.limitPrimaryActions) &&
+      !!this.visibleActions[column]
+    );
   }
 
   private onResize(event: Event): void {
@@ -97,7 +107,7 @@ export class PoPageDefaultComponent extends PoPageDefaultBaseComponent implement
       this.setDropdownActions();
     } else {
       this.isMobile = false;
-      this.limitPrimaryActions = 3;
+      this.limitPrimaryActions = this.maxVisibleActionButtons;
       this.setDropdownActions();
     }
   }

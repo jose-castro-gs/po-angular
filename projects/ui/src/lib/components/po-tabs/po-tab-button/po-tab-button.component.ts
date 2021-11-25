@@ -37,6 +37,7 @@ export class PoTabButtonComponent implements OnChanges {
 
   private _active: boolean;
   private _hide: boolean;
+  private _align: string;
 
   // Ativa o botão
   @Input('p-active') set active(value: boolean) {
@@ -58,6 +59,15 @@ export class PoTabButtonComponent implements OnChanges {
 
   get hide(): boolean {
     return this._hide;
+  }
+
+  // Alinhamento do botao [center] | left | right
+  @Input('p-align') set align(value: string) {
+    this._align = value;
+  }
+
+  get align(): string {
+    return this._align;
   }
 
   constructor(private elementRef: ElementRef) {}

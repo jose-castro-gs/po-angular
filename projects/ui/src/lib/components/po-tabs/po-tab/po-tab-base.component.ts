@@ -26,6 +26,7 @@ export abstract class PoTabBaseComponent {
   private _active?: boolean = false;
   private _disabled?: boolean = false;
   private _hide?: boolean = false;
+  private _align: string = 'center';
 
   /**
    * @optional
@@ -79,6 +80,23 @@ export abstract class PoTabBaseComponent {
 
   get hide(): boolean {
     return this._hide;
+  }
+
+  /**
+   * @optional
+   *
+   * @description
+   *
+   * Alinhamento do botao [center] | left | right
+   *
+   * @default `center`
+   */
+  @Input('p-align') set align(value: string) {
+    this._align = value;
+  }
+
+  get align(): string {
+    return this._align;
   }
 
   protected abstract setDisplayOnActive();

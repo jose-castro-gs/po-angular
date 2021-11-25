@@ -46,4 +46,13 @@ export interface PoTab {
 
   /** Rótulo da aba. */
   label: string;
+
+  /**
+   * @optional
+   *
+   * @description
+   *
+   * Alinhamento da label [center | left | right].
+   */
+  align?: string;
 }

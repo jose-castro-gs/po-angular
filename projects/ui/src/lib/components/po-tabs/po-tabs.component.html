@@ -1,5 +1,5 @@
 <div class="po-tabs-container" [class.po-tabs-container-mobile]="isMobileDevice">
-  <div class="po-tabs-header">
+  <div class="po-tabs-header" [style.width]="width" [style.margin-left]="marginLeft" [style.margin-right]="marginRight">
     <ng-container *ngFor="let tab of tabs; trackBy: trackByFn">
       <po-tab-button
         *ngIf="isVisibleTab(tab)"
@@ -10,6 +10,7 @@
         [p-hide]="tab.hide"
         [p-id]="tab.id"
         [p-label]="tab.label"
+        [p-align]="tab.align"
         [p-small]="small"
         (keyup.enter)="closePopover()"
         (p-activated)="onTabActive(tab)"

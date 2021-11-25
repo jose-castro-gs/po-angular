@@ -24,7 +24,12 @@ import { convertToBoolean } from '../../utils/util';
  */
 @Directive()
 export class PoTabsBaseComponent {
+  public marginLeft: string = '';
+  public marginRight: string = 'auto';
+
   private _small?: boolean = false;
+  private _width?: string = '100%';
+  private _align: string = 'left';
 
   /**
    * @optinal
@@ -41,5 +46,42 @@ export class PoTabsBaseComponent {
 
   get small(): boolean {
     return this._small;
+  }
+
+  /**
+   * @optinal
+   *
+   * @description
+   *
+   * Configura o tamanho da regiao das abas.
+   *
+   * @default `100%`
+   */
+  @Input('p-width') set width(value: string) {
+    this._width = value;
+  }
+
+  get width(): string {
+    return this._width;
+  }
+
+  /**
+   * @optional
+   *
+   * @description
+   *
+   * Alinhamento das tabs center | [left] | right
+   *
+   * @default `left`
+   */
+  @Input('p-align') set align(value: string) {
+    this._align = value;
+
+    this.marginLeft = this.align === 'left' ? '' : 'auto';
+    this.marginRight = this.align === 'right' ? '' : 'auto';
+  }
+
+  get align(): string {
+    return this._align;
   }
 }

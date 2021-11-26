@@ -35,6 +35,13 @@ const poTabsMaxNumberOfTabs = 5;
  */
 @Component({
   selector: 'po-tabs',
+  styles: [
+    `
+      .po-tabs-container {
+        box-shadow: inset 0 -1px 0 0 #eceeee;
+      }
+    `
+  ],
   templateUrl: './po-tabs.component.html'
 })
 export class PoTabsComponent extends PoTabsBaseComponent {

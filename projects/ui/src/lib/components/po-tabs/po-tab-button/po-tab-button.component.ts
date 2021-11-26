@@ -1,6 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
 import { convertToBoolean } from '../../../utils/util';
+import { PoColorPaletteEnum } from '../../../enums/po-color-palette.enum';
+
+const poTagColors = (<any>Object).values(PoColorPaletteEnum);
 
 /**
  * @docsPrivate
@@ -38,6 +41,9 @@ export class PoTabButtonComponent implements OnChanges {
   private _active: boolean;
   private _hide: boolean;
   private _align: string;
+  private _color?: string;
+  private _colorLabel?: string;
+  private _activeColors?: string;
 
   // Ativa o botão
   @Input('p-active') set active(value: boolean) {
@@ -70,7 +76,28 @@ export class PoTabButtonComponent implements OnChanges {
     return this._align;
   }
 
+  // cor da aba
+  @Input('p-color') set color(value: string) {
+    this._color = poTagColors.includes(value) ? value : undefined;
+  }
+
+  // cor da label da aba
+  @Input('p-colorLabel') set colorLabel(value: string) {
+    this._colorLabel = poTagColors.includes(value) ? value : undefined;
+  }
+
+  // cor da aba e label
+  @Input('p-activeColors') set activeColors(value: string) {
+    this._activeColors = value ? value : undefined;
+  }
+
   constructor(private elementRef: ElementRef) {}
+
+  get buttonColor() {
+    return this.active
+      ? this._activeColors
+      : (this._color ? `po-${this._color}` : '') + (this._colorLabel ? ` po-text-${this._colorLabel}` : '');
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if ((changes.hide && changes.hide.currentValue) || (changes.disabled && changes.disabled.currentValue)) {

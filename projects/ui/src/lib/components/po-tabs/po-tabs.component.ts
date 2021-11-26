@@ -68,6 +68,13 @@ export class PoTabsComponent extends PoTabsBaseComponent {
     return this.tabs.filter(tab => !tab.hide);
   }
 
+  get tabActiveColors() {
+    return (
+      (this.colorActive ? `po-${this.colorActive}` : '') +
+      (this.colorLabelActive ? ` po-text-${this.colorLabelActive}` : '')
+    );
+  }
+
   closePopover(): void {
     const containsPopoverVisible = this.tabDropdown && this.tabDropdown.popover && !this.tabDropdown.popover.isHidden;
 

@@ -1,7 +1,9 @@
 import { EventEmitter, Input, Output, Directive } from '@angular/core';
 
+import { PoColorPaletteEnum } from '../../../enums/po-color-palette.enum';
 import { convertToBoolean, uuid } from '../../../utils/util';
 
+const poTagColors = (<any>Object).values(PoColorPaletteEnum);
 /**
  * @description
  *
@@ -27,6 +29,8 @@ export abstract class PoTabBaseComponent {
   private _disabled?: boolean = false;
   private _hide?: boolean = false;
   private _align: string = 'center';
+  private _color?: string;
+  private _colorLabel?: string;
 
   /**
    * @optional
@@ -97,6 +101,66 @@ export abstract class PoTabBaseComponent {
 
   get align(): string {
     return this._align;
+  }
+
+  /**
+   * @optional
+   *
+   * @description
+   *
+   *   * Define uma cor para a aba ativa
+   *
+   * Valores válidos:
+   *  - <span class="dot po-color-01"></span> `color-01`
+   *  - <span class="dot po-color-02"></span> `color-02`
+   *  - <span class="dot po-color-03"></span> `color-03`
+   *  - <span class="dot po-color-04"></span> `color-04`
+   *  - <span class="dot po-color-05"></span> `color-05`
+   *  - <span class="dot po-color-06"></span> `color-06`
+   *  - <span class="dot po-color-07"></span> `color-07`
+   *  - <span class="dot po-color-08"></span> `color-08`
+   *  - <span class="dot po-color-09"></span> `color-09`
+   *  - <span class="dot po-color-10"></span> `color-10`
+   *  - <span class="dot po-color-11"></span> `color-11`
+   *  - <span class="dot po-color-12"></span> `color-12`
+   *
+   */
+  @Input('p-color') set color(value: string) {
+    this._color = poTagColors.includes(value) ? value : undefined;
+  }
+
+  get color(): string {
+    return this._color;
+  }
+
+  /**
+   * @optional
+   *
+   * @description
+   *
+   *   * Define uma cor para a label da aba ativa
+   *
+   * Valores válidos:
+   *  - <span class="dot po-color-01"></span> `color-01`
+   *  - <span class="dot po-color-02"></span> `color-02`
+   *  - <span class="dot po-color-03"></span> `color-03`
+   *  - <span class="dot po-color-04"></span> `color-04`
+   *  - <span class="dot po-color-05"></span> `color-05`
+   *  - <span class="dot po-color-06"></span> `color-06`
+   *  - <span class="dot po-color-07"></span> `color-07`
+   *  - <span class="dot po-color-08"></span> `color-08`
+   *  - <span class="dot po-color-09"></span> `color-09`
+   *  - <span class="dot po-color-10"></span> `color-10`
+   *  - <span class="dot po-color-11"></span> `color-11`
+   *  - <span class="dot po-color-12"></span> `color-12`
+   *
+   */
+  @Input('p-colorLabel') set colorLabel(value: string) {
+    this._colorLabel = poTagColors.includes(value) ? value : undefined;
+  }
+
+  get colorLabel(): string {
+    return this._colorLabel;
   }
 
   protected abstract setDisplayOnActive();

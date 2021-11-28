@@ -5,7 +5,9 @@
   [class.po-tab-button-disabled]="disabled"
   [class.po-tab-button-sm]="small"
   [style.text-align]="align"
-  [ngClass]="buttonColor"
+  [ngClass]="buttonColor('class')"
+  [style.color]="buttonColor('color')"
+  [style.background-color]="buttonColor('back')"
   (click)="onClick()"
   (keyup.enter)="onClick()"
 >

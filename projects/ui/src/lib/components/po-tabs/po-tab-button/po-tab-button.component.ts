@@ -78,25 +78,64 @@ export class PoTabButtonComponent implements OnChanges {
 
   // cor da aba
   @Input('p-color') set color(value: string) {
-    this._color = poTagColors.includes(value) ? value : undefined;
+    if (value) {
+      if (value.includes('color-')) {
+        this._color = poTagColors.includes(value) ? value : undefined;
+      } else {
+        this._color = value;
+      }
+    }
   }
 
   // cor da label da aba
-  @Input('p-colorLabel') set colorLabel(value: string) {
-    this._colorLabel = poTagColors.includes(value) ? value : undefined;
+  @Input('p-color-label') set colorLabel(value: string) {
+    if (value) {
+      if (value.includes('color-')) {
+        this._colorLabel = poTagColors.includes(value) ? value : undefined;
+      } else {
+        this._colorLabel = value;
+      }
+    }
   }
 
   // cor da aba e label
-  @Input('p-activeColors') set activeColors(value: string) {
+  @Input('p-active-colors') set activeColors(value: string) {
     this._activeColors = value ? value : undefined;
   }
 
   constructor(private elementRef: ElementRef) {}
 
-  get buttonColor() {
-    return this.active
-      ? this._activeColors
-      : (this._color ? `po-${this._color}` : '') + (this._colorLabel ? ` po-text-${this._colorLabel}` : '');
+  buttonColor(param: string) {
+    if (param === 'class') {
+      if (this.active) {
+        return this._activeColors?.includes('color-') ? this._activeColors : '';
+      } else {
+        return (
+          (this._color ? (this._color.includes('color-') ? `po-${this._color}` : '') : '') +
+          (this._colorLabel ? (this._colorLabel.includes('color-') ? ` po-text-${this._colorLabel}` : '') : '')
+        );
+      }
+    } else if (param === 'color') {
+      if (this.active) {
+        if (this._activeColors?.includes('color-')) {
+          return '';
+        } else {
+          return this._activeColors?.split(';')[1];
+        }
+      } else {
+        return this._colorLabel ? (this._colorLabel.includes('color-') ? '' : this._colorLabel) : '';
+      }
+    } else if (param === 'back') {
+      if (this.active) {
+        if (this._activeColors?.includes('color-')) {
+          return '';
+        } else {
+          return this._activeColors?.split(';')[0];
+        }
+      } else {
+        return this._color ? (this._color.includes('color-') ? '' : this._color) : '';
+      }
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

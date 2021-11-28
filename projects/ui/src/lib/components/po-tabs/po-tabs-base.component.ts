@@ -32,9 +32,8 @@ export class PoTabsBaseComponent {
 
   private _small?: boolean = false;
   private _width?: string = '100%';
-  private _align: string = 'left';
-  private _colorActive?: string;
-  private _colorLabelActive?: string;
+  private _activeColor?: string;
+  private _activeColorLabel?: string;
 
   /**
    * @optinal
@@ -80,14 +79,8 @@ export class PoTabsBaseComponent {
    * @default `left`
    */
   @Input('p-align') set align(value: string) {
-    this._align = value;
-
-    this.marginLeft = this.align === 'left' ? '' : 'auto';
-    this.marginRight = this.align === 'right' ? '' : 'auto';
-  }
-
-  get align(): string {
-    return this._align;
+    this.marginLeft = value === 'left' ? '' : 'auto';
+    this.marginRight = value === 'right' ? '' : 'auto';
   }
 
   /**
@@ -95,29 +88,22 @@ export class PoTabsBaseComponent {
    *
    * @description
    *
-   *   * Define uma cor para a aba ativa
-   *
-   * Valores válidos:
-   *  - <span class="dot po-color-01"></span> `color-01`
-   *  - <span class="dot po-color-02"></span> `color-02`
-   *  - <span class="dot po-color-03"></span> `color-03`
-   *  - <span class="dot po-color-04"></span> `color-04`
-   *  - <span class="dot po-color-05"></span> `color-05`
-   *  - <span class="dot po-color-06"></span> `color-06`
-   *  - <span class="dot po-color-07"></span> `color-07`
-   *  - <span class="dot po-color-08"></span> `color-08`
-   *  - <span class="dot po-color-09"></span> `color-09`
-   *  - <span class="dot po-color-10"></span> `color-10`
-   *  - <span class="dot po-color-11"></span> `color-11`
-   *  - <span class="dot po-color-12"></span> `color-12`
+   * Define uma cor para a aba ativa
+   * color-01..12, ou red,yellow, ou #8241a4
    *
    */
-  @Input('p-colorActive') set colorActive(value: string) {
-    this._colorActive = poTagColors.includes(value) ? value : undefined;
+  @Input('p-active-color') set activeColor(value: string) {
+    if (value) {
+      if (value.includes('color-')) {
+        this._activeColor = poTagColors.includes(value) ? value : undefined;
+      } else {
+        this._activeColor = value;
+      }
+    }
   }
 
-  get colorActive(): string {
-    return this._colorActive;
+  get activeColor(): string {
+    return this._activeColor;
   }
 
   /**
@@ -125,28 +111,21 @@ export class PoTabsBaseComponent {
    *
    * @description
    *
-   *   * Define uma cor para a label da aba ativa
-   *
-   * Valores válidos:
-   *  - <span class="dot po-color-01"></span> `color-01`
-   *  - <span class="dot po-color-02"></span> `color-02`
-   *  - <span class="dot po-color-03"></span> `color-03`
-   *  - <span class="dot po-color-04"></span> `color-04`
-   *  - <span class="dot po-color-05"></span> `color-05`
-   *  - <span class="dot po-color-06"></span> `color-06`
-   *  - <span class="dot po-color-07"></span> `color-07`
-   *  - <span class="dot po-color-08"></span> `color-08`
-   *  - <span class="dot po-color-09"></span> `color-09`
-   *  - <span class="dot po-color-10"></span> `color-10`
-   *  - <span class="dot po-color-11"></span> `color-11`
-   *  - <span class="dot po-color-12"></span> `color-12`
+   * Define uma cor para a label da aba ativa
+   * color-01..12, ou red,yellow, ou #8241a4
    *
    */
-  @Input('p-colorLabelActive') set colorLabelActive(value: string) {
-    this._colorLabelActive = poTagColors.includes(value) ? value : undefined;
+  @Input('p-active-color-label') set activeColorLabel(value: string) {
+    if (value) {
+      if (value.includes('color-')) {
+        this._activeColorLabel = poTagColors.includes(value) ? value : undefined;
+      } else {
+        this._activeColorLabel = value;
+      }
+    }
   }
 
-  get colorLabelActive(): string {
-    return this._colorLabelActive;
+  get activeColorLabel(): string {
+    return this._activeColorLabel;
   }
 }

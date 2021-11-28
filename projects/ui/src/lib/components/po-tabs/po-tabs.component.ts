@@ -77,8 +77,12 @@ export class PoTabsComponent extends PoTabsBaseComponent {
 
   get tabActiveColors() {
     return (
-      (this.colorActive ? `po-${this.colorActive}` : '') +
-      (this.colorLabelActive ? ` po-text-${this.colorLabelActive}` : '')
+      (this.activeColor ? (this.activeColor.includes('color-') ? `po-${this.activeColor}` : this.activeColor) : '') +
+      (this.activeColorLabel
+        ? this.activeColorLabel.includes('color-')
+          ? ` po-text-${this.activeColorLabel}`
+          : ';' + this.activeColorLabel
+        : '')
     );
   }
 

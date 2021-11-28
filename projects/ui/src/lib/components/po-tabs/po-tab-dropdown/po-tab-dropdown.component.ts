@@ -28,6 +28,9 @@ export class PoTabDropdownComponent {
   // Lista de abas
   @Input('p-tabs') tabs: Array<PoTabComponent> = [];
 
+  // cor da aba e label
+  @Input('p-active-colors') activeColors: string;
+
   // Evento que será emitido ao ativar uma aba
   @Output('p-activated') activated = new EventEmitter<any>();
 

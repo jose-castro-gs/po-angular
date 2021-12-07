@@ -756,6 +756,7 @@ describe('PoTableComponent:', () => {
     component.actions = actions;
     component.hideDetail = false;
     component.columns = columnsWithDetail;
+    component.actionRight = true;
 
     fixture.detectChanges();
 
@@ -775,6 +776,22 @@ describe('PoTableComponent:', () => {
 
     const singleActionColumn = nativeElement.querySelector('.po-table-header-single-action');
     expect(singleActionColumn).toBeNull();
+  });
+
+  it('should contain more than 1 "header-master-detail" if actionRight is false and "isSingleAction" is false', () => {
+    component.selectable = true;
+    component.actions = [
+      { label: 'PO1', visible: true },
+      { label: 'PO2', visible: true }
+    ];
+    component.hideDetail = false;
+    component.columns = columnsWithDetail;
+
+    fixture.detectChanges();
+
+    const masterDetails = nativeElement.querySelectorAll('.po-table-header-master-detail');
+
+    expect(masterDetails.length).toBe(2);
   });
 
   it('should not call debounceResize in ngDoCheck when visibleElement is true', () => {
@@ -1065,6 +1082,64 @@ describe('PoTableComponent:', () => {
       });
     });
 
+    describe('getCellData:', () => {
+      it('should return the last string in arrayProperty', () => {
+        const column: any = {
+          property: 'address.street',
+          label: 'Rua'
+        };
+        const row: any = {
+          name: 'teste',
+          address: {
+            street: 'Rua dos Alfeneiros, nº 4'
+          }
+        };
+        const result = component.getCellData(row, column);
+        expect(result).toEqual(row.address.street);
+      });
+
+      it('should return property if property is only item in array', () => {
+        const column: any = {
+          property: 'address',
+          label: 'Rua'
+        };
+        const row: any = {
+          name: 'teste',
+          address: 'Rua dos Alfeneiros, nº 4'
+        };
+        const result = component.getCellData(row, column);
+        expect(result).toEqual(row.address);
+      });
+
+      it('should return a empty string when property is `undefined`', () => {
+        const column: any = {
+          property: 'address.street',
+          label: 'Rua'
+        };
+        const row: any = {
+          name: 'teste',
+          address: {}
+        };
+        const expectedResult = '';
+        const result = component.getCellData(row, column);
+        expect(result).toEqual(expectedResult);
+      });
+
+      it('should return property if property value is equal 0', () => {
+        const column: any = {
+          property: 'status',
+          label: 'Status'
+        };
+        const row: any = {
+          name: 'teste',
+          status: 0
+        };
+        const expectedResult = 0;
+        const result = component.getCellData(row, column);
+        expect(result).toEqual(expectedResult);
+      });
+    });
+
     describe('formatNumber:', () => {
       it('should return formatted value.', () => {
         const format = '1.2-5';
@@ -1153,7 +1228,7 @@ describe('PoTableComponent:', () => {
 
       it(`shouldn't call 'mergeCustomIcons' or 'findCustomIcon' if doesn't have column.icons and return undefined.`, () => {
         const row: any = { po: 'favorite' };
-        const column: any = { type: 'icon' };
+        const column: any = { property: 'po', type: 'icon' };
 
         const spyOnMergeCustomIcons = spyOn(component, <any>'mergeCustomIcons');
         const spyOFindCustomIcon = spyOn(component, <any>'findCustomIcon');
@@ -2281,6 +2356,7 @@ describe('PoTableComponent:', () => {
       component.columns = [{ property: 'name' }, { property: 'age' }];
       component.actions = [{ label: 'First Action', action: () => {} }];
       component.hideColumnsManager = false;
+      component.actionRight = true;
 
       component.tableRowTemplate = {
         ...mockTableDetailDiretive,

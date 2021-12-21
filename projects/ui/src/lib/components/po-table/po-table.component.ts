@@ -219,6 +219,58 @@ export class PoTableComponent extends PoTableBaseComponent implements AfterViewI
     return this.actions && this.actions.filter(action => action && action.visible !== false);
   }
 
+  get isMasterDetail() {
+    if ((this.hasMasterDetailColumn || this.hasRowTemplate) && !this.hasRowTemplateWithArrowDirectionRight) {
+      if (this.isLeftColumnsManager) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  get isActionLeft() {
+    if (!this.actionRight && (this.visibleActions.length > 1 || this.isSingleAction)) {
+      if (!((this.hasMasterDetailColumn || this.hasRowTemplate) && !this.hasRowTemplateWithArrowDirectionRight)) {
+        if (this.isLeftColumnsManager) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  get isLeftColumnsManager() {
+    return this.hasValidColumns && !this.hideColumnsManager && this.leftColumnsManager;
+  }
+
+  get insertColumnManager() {
+    if (this.isLeftColumnsManager) {
+      if (this.columnMasterDetail && !this.hideDetail && !this.hasRowTemplate) {
+        return false;
+      } else {
+        if (!this.actionRight && (this.visibleActions.length > 1 || this.isSingleAction)) {
+          return false;
+        } else {
+          if (this.hasRowTemplate && !this.hasRowTemplateWithArrowDirectionRight) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      }
+    } else {
+      return false;
+    }
+  }
+
   ngAfterViewInit() {
     this.initialized = true;
   }

@@ -1,0 +1,113 @@
+<div class="po-wrapper">
+  <po-page-default p-title="AppName">
+    <div class="po-row">
+      <po-switch class="po-sm-02" name="switch1" [(ngModel)]="switch1" p-label="Action Right"> </po-switch>
+      <po-switch class="po-sm-02" name="switch2" [(ngModel)]="switch2" p-label="Left Manager"> </po-switch>
+      <po-switch class="po-sm-02" name="switch3" [(ngModel)]="switch3" p-label="Hide Manager"> </po-switch>
+      <po-switch class="po-sm-02" name="switch4" [(ngModel)]="switch4" p-label="Actions 1"> </po-switch>
+    </div>
+
+    <po-divider> </po-divider>
+
+    <po-table
+      [p-striped]="true"
+      [p-selectable]="true"
+      [p-items]="[
+        { table: 'PO Table1', col: 'item1' },
+      ]"
+      [p-actions]="
+        this.switch4
+          ? [{ label: 'act1', icon: 'po-icon-copy' }]
+          : [
+              { label: 'act1', icon: 'po-icon-copy' },
+              { label: 'act2', icon: 'po-icon-edit' }
+            ]
+      "
+      [p-actions-right]="switch1"
+      [p-left-columns-manager]="switch2"
+      [p-hide-columns-manager]="switch3"
+    >
+      <ng-template p-table-row-template let-rowItem>
+        <po-tabs p-width="600px">
+          <po-tab [p-label]="'tab1'" [p-active]="true"> </po-tab>
+          <po-tab [p-label]="'tab2'"> </po-tab>
+          <po-tab [p-label]="'tab3'"> </po-tab>
+          <po-tab [p-label]="'tab4'"> </po-tab>
+        </po-tabs>
+      </ng-template>
+    </po-table>
+
+    <po-divider> </po-divider>
+
+    <po-table
+      [p-striped]="true"
+      [p-selectable]="true"
+      [p-items]="[
+        { table: 'PO Table1', col: 'item1' },
+      ]"
+      [p-actions]="
+        this.switch4
+          ? [{ label: 'act1', icon: 'po-icon-copy' }]
+          : [
+              { label: 'act1', icon: 'po-icon-copy' },
+              { label: 'act2', icon: 'po-icon-edit' }
+            ]
+      "
+      [p-actions-right]="switch1"
+      [p-left-columns-manager]="switch2"
+      [p-hide-columns-manager]="switch3"
+    >
+      <ng-template p-table-row-template let-rowItem p-table-row-template-arrow-direction="right">
+        <po-tabs p-width="600px">
+          <po-tab [p-label]="'tab1'" [p-active]="true"> </po-tab>
+          <po-tab [p-label]="'tab2'"> </po-tab>
+          <po-tab [p-label]="'tab3'"> </po-tab>
+          <po-tab [p-label]="'tab4'"> </po-tab>
+        </po-tabs>
+      </ng-template>
+    </po-table>
+    <po-divider> </po-divider>
+
+    <po-table
+      [p-striped]="true"
+      [p-selectable]="true"
+      [p-items]="[
+        { table: 'PO Table1', col: 'item1' },
+      ]"
+      [p-actions-right]="switch1"
+      [p-left-columns-manager]="switch2"
+      [p-hide-columns-manager]="switch3"
+    >
+      <ng-template p-table-row-template let-rowItem>
+        <po-tabs p-width="600px">
+          <po-tab [p-label]="'tab1'" [p-active]="true"> </po-tab>
+          <po-tab [p-label]="'tab2'"> </po-tab>
+          <po-tab [p-label]="'tab3'"> </po-tab>
+          <po-tab [p-label]="'tab4'"> </po-tab>
+        </po-tabs>
+      </ng-template>
+    </po-table>
+
+    <po-divider> </po-divider>
+
+    <po-table
+      [p-striped]="true"
+      [p-selectable]="true"
+      [p-items]="[
+        { table: 'PO Table1', col: 'item1' },
+      ]"
+      [p-actions-right]="switch1"
+      [p-left-columns-manager]="switch2"
+      [p-hide-columns-manager]="switch3"
+    >
+      <ng-template p-table-row-template let-rowItem p-table-row-template-arrow-direction="right">
+        <po-tabs p-width="600px">
+          <po-tab [p-label]="'tab1'" [p-active]="true"> </po-tab>
+          <po-tab [p-label]="'tab2'"> </po-tab>
+          <po-tab [p-label]="'tab3'"> </po-tab>
+          <po-tab [p-label]="'tab4'"> </po-tab>
+        </po-tabs>
+      </ng-template>
+    </po-table>
+  </po-page-default>
+</div>

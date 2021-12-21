@@ -123,6 +123,17 @@ export abstract class PoTableBaseComponent implements OnChanges, OnDestroy {
    *
    * @description
    *
+   * Permite que o gerenciador de colunas esteja a esquerda e nao a direita como padrao.
+   *
+   * @default `false`
+   */
+  @Input('p-left-columns-manager') @InputBoolean() leftColumnsManager?: boolean = false;
+
+  /**
+   * @optional
+   *
+   * @description
+   *
    * Permite fechar um detalhe ou row template automaticamente, ao abrir outro item.
    *
    * @default `false`

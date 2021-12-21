@@ -282,6 +282,18 @@ export abstract class PoLookupBaseComponent
    *
    * @description
    *
+   * Será passado para o evento selecionado o objeto ou array de objetos.
+   * Caso contrario, será passado o valor ou array de valores.
+   *
+   * @default `false`
+   */
+  @Input('p-selected-object') @InputBoolean() selectedObject: boolean = false;
+
+  /**
+   * @optional
+   *
+   * @description
+   *
    * Evento será disparado quando ocorrer alguma seleção.
    * Será passado por parâmetro o objeto com o valor selecionado.
    */
@@ -490,9 +502,20 @@ export abstract class PoLookupBaseComponent
 
   // Seleciona o valor do model.
   selectValue(valueSelected: any) {
-    this.valueToModel = valueSelected;
+    this.valueToModel = this.multiple
+      ? valueSelected.map(option => option[this.fieldValue])
+      : valueSelected[0][this.fieldValue];
     this.callOnChange(this.valueToModel);
-    this.selected.emit(valueSelected);
+
+    if (this.selectedObject) {
+      if (this.multiple) {
+        this.selected.emit(valueSelected);
+      } else {
+        this.selected.emit(valueSelected[0]);
+      }
+    } else {
+      this.selected.emit(this.valueToModel);
+    }
   }
 
   callOnChange(value: any) {
@@ -592,13 +615,12 @@ export abstract class PoLookupBaseComponent
     return value ? this.keysDescription.map(column => value[column]).join(' - ') : '';
   }
 
-  // Chama o método writeValue e preenche o model.
+  // Chama o método selectValue e preenche o model.
   protected selectModel(options: Array<any>) {
     if (options.length) {
       this.selectedOptions = [...options];
 
-      const newModel = this.multiple ? options.map(option => option[this.fieldValue]) : options[0][this.fieldValue];
-      this.selectValue(newModel);
+      this.selectValue(options);
 
       if (options.length === 1) {
         this.oldValue = options[0][this.fieldLabel];

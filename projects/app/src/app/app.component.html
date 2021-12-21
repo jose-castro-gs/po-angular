@@ -1,0 +1,51 @@
+<div class="po-wrapper">
+  <po-page-default p-title="AppName">
+    <p>AppName page</p>
+
+    <po-lookup
+      name="lookup"
+      p-field-label="label"
+      p-field-value="value"
+      p-filter-service="https://po-sample-api.herokuapp.com/v1/heroes"
+      p-label="PO Lookup"
+      (p-selected)="teste1($event)"
+      [p-selected-object]="false"
+    >
+    </po-lookup>
+
+    <po-lookup
+      name="lookup"
+      p-field-label="label"
+      p-field-value="value"
+      p-filter-service="https://po-sample-api.herokuapp.com/v1/heroes"
+      p-label="PO Lookup"
+      (p-selected)="teste1($event)"
+      [p-selected-object]="true"
+    >
+    </po-lookup>
+
+    <po-lookup
+      name="lookup"
+      p-field-label="label"
+      p-field-value="value"
+      p-filter-service="https://po-sample-api.herokuapp.com/v1/heroes"
+      p-label="PO Lookup"
+      (p-selected)="teste1($event)"
+      [p-selected-object]="false"
+      [p-multiple]="true"
+    >
+    </po-lookup>
+
+    <po-lookup
+      name="lookup"
+      p-field-label="label"
+      p-field-value="value"
+      p-filter-service="https://po-sample-api.herokuapp.com/v1/heroes"
+      p-label="PO Lookup"
+      (p-selected)="teste1($event)"
+      [p-selected-object]="true"
+      [p-multiple]="true"
+    >
+    </po-lookup>
+  </po-page-default>
+</div>
